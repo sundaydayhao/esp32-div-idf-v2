@@ -1,4 +1,4 @@
-#include <algorithm>
+﻿#include <algorithm>
 #include <cmath>
 #include <vector>
 #include "keyboard_ui.h"
@@ -1250,7 +1250,7 @@ void runUI() {
 #undef STATUS_BAR_Y_OFFSET
     #define STATUS_BAR_Y_OFFSET 20
     #define STATUS_BAR_HEIGHT 16
-    #define ICON_SIZE 16
+    #define ICON_SIZE UI_ICON_SIZE
 #undef ICON_NUM
     #define ICON_NUM 6
 
@@ -2135,7 +2135,7 @@ void runUI() {
 #undef STATUS_BAR_Y_OFFSET
     #define STATUS_BAR_Y_OFFSET 20
     #define STATUS_BAR_HEIGHT 16
-    #define ICON_SIZE 16
+    #define ICON_SIZE UI_ICON_SIZE
 #undef ICON_NUM
     #define ICON_NUM 4
 
@@ -2628,7 +2628,7 @@ void runUI() {
 #undef STATUS_BAR_Y_OFFSET
     #define STATUS_BAR_Y_OFFSET 20
     #define STATUS_BAR_HEIGHT 16
-    #define ICON_SIZE 16
+    #define ICON_SIZE UI_ICON_SIZE
 #undef ICON_NUM
     #define ICON_NUM 6
 

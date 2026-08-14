@@ -1,4 +1,4 @@
-#include "rfid.h"
+﻿#include "rfid.h"
 
 #include <div_pn532.h>
 #include "div_serial.h"
@@ -83,7 +83,7 @@ static constexpr int16_t kRfidToolbarY = 20;
 static constexpr int16_t kRfidToolbarH = 16;
 static constexpr int kRfidToolbarBottom = kRfidToolbarY + kRfidToolbarH;
 static constexpr int kRfidIconBackX = 10;
-static constexpr int kRfidIconSize = 16;
+static constexpr int kRfidIconSize = UI_ICON_SIZE;
 static bool s_rfidUiDrawn = false;
 
 static int rfidContentBottom() {

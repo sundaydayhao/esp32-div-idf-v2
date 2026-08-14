@@ -8,7 +8,7 @@
 #define PROGMEM
 #endif
 
-/*©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤ Colors ©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Colors ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 const uint16_t GRAY = 0x8410, BLUE = 0x001F, RED = 0xF800,
                GREEN  = 0x07E0, BLACK = 0x0000, WHITE = 0xFFFF,
                LIGHT_GRAY = 0xC618, DARK_GRAY = 0x4208;
@@ -44,7 +44,13 @@ uint16_t uiUniversalColor();
 
 #define SELECTED_ICON_COLOR UI_ICON
 
-/*©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤ UI Defaults ©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤*/
+#if defined(BOARD_ESP32_DIV_V4)
+#define UI_ICON_SIZE 32
+#else
+#define UI_ICON_SIZE 16
+#endif
+
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ UI Defaults ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 #ifndef UI_BG
 #define UI_BG UI.bg
 #endif
@@ -73,7 +79,7 @@ uint16_t uiUniversalColor();
 #define UI_OK GREEN
 #endif
 
-/*©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤ Project Info ©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Project Info ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 #ifndef ESP32DIV_NAME
 #define ESP32DIV_NAME "ESP32-DIV"
 #endif
@@ -90,48 +96,18 @@ static const uint8_t OBF_EM[]   = {107, 97, 110, 109, 122, 124, 109, 107, 96, 72
 static const uint8_t OBF_GH[]   = {111, 97, 124, 96, 125, 106, 38, 107, 103, 101, 39, 107, 97, 110, 109, 122, 124, 109, 107, 96}; 
 static const uint8_t OBF_WB[]   = {75, 97, 110, 109, 122, 92, 109, 107, 96, 38, 102, 109, 124};       
 
-/*©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤ Board Selection ©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Board Selection ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 // Default is selected in board_config.h. You can also pass a BOARD_* define
 // from your build flags to target a board without editing source.
-#if !defined(BOARD_ESP32_DIV_V4) && !defined(BOARD_ESP32_DIV_V3) && !defined(BOARD_ESP32_DIV_V2) && !defined(BOARD_CYD) && !defined(BOARD_ESP32_DIV_V1)
+#if !defined(BOARD_ESP32_DIV_V4) && !defined(BOARD_ESP32_DIV_V3)
 #define BOARD_ESP32_DIV_V3
 #endif
 
-#if (defined(BOARD_ESP32_DIV_V4) + defined(BOARD_ESP32_DIV_V3) + defined(BOARD_ESP32_DIV_V2) + defined(BOARD_CYD) + defined(BOARD_ESP32_DIV_V1)) > 1
-#error "Select only one board: BOARD_ESP32_DIV_V4, BOARD_ESP32_DIV_V3, BOARD_ESP32_DIV_V2, BOARD_ESP32_DIV_V1, or BOARD_CYD"
+#if (defined(BOARD_ESP32_DIV_V4) + defined(BOARD_ESP32_DIV_V3)) > 1
+#error "Select only one board: BOARD_ESP32_DIV_V4 or BOARD_ESP32_DIV_V3"
 #endif
 
-#if defined(BOARD_CYD)
-#ifndef ESP32DIV_BOARD_NAME
-#define ESP32DIV_BOARD_NAME "CYD ESP32-2432S028R"
-#endif
-#ifndef HAS_PCF8574_BUTTONS
-#define HAS_PCF8574_BUTTONS 0
-#endif
-#ifndef BOARD_HAS_ESP32S3
-#define BOARD_HAS_ESP32S3 0
-#endif
-#elif defined(BOARD_ESP32_DIV_V1)
-#ifndef ESP32DIV_BOARD_NAME
-#define ESP32DIV_BOARD_NAME "ESP32-DIV V1 ESP32U"
-#endif
-#ifndef HAS_PCF8574_BUTTONS
-#define HAS_PCF8574_BUTTONS 1
-#endif
-#ifndef BOARD_HAS_ESP32S3
-#define BOARD_HAS_ESP32S3 0
-#endif
-#elif defined(BOARD_ESP32_DIV_V2)
-#ifndef ESP32DIV_BOARD_NAME
-#define ESP32DIV_BOARD_NAME "ESP32-DIV V2"
-#endif
-#ifndef HAS_PCF8574_BUTTONS
-#define HAS_PCF8574_BUTTONS 1
-#endif
-#ifndef BOARD_HAS_ESP32S3
-#define BOARD_HAS_ESP32S3 1
-#endif
-#elif defined(BOARD_ESP32_DIV_V3)
+#if defined(BOARD_ESP32_DIV_V3)
 #ifndef ESP32DIV_BOARD_NAME
 #define ESP32DIV_BOARD_NAME "ESP32-DIV V3"
 #endif
@@ -152,61 +128,13 @@ static const uint8_t OBF_WB[]   = {75, 97, 110, 109, 122, 92, 109, 107, 96, 38, 
 #define BOARD_HAS_ESP32S3 1
 #endif
 #else
-#error "Unknown board: define BOARD_ESP32_DIV_V4, BOARD_ESP32_DIV_V3, BOARD_ESP32_DIV_V2, BOARD_ESP32_DIV_V1, or BOARD_CYD"
+#error "Unknown board: define BOARD_ESP32_DIV_V4 or BOARD_ESP32_DIV_V3"
 #endif
 
-/*©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤ Touch calibration profiles ©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Touch calibration profiles ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 /* Factory defaults per board (raw XPT2046 range). Override in board_config.h.
  * User-saved NVS calibration overrides these defaults when the board id matches. */
-#if defined(BOARD_CYD)
-#ifndef TOUCH_PROFILE_ID
-#define TOUCH_PROFILE_ID "CYD"
-#endif
-#ifndef TOUCH_X_MIN
-#define TOUCH_X_MIN 200
-#endif
-#ifndef TOUCH_X_MAX
-#define TOUCH_X_MAX 3700
-#endif
-#ifndef TOUCH_Y_MIN
-#define TOUCH_Y_MIN 240
-#endif
-#ifndef TOUCH_Y_MAX
-#define TOUCH_Y_MAX 3800
-#endif
-#elif defined(BOARD_ESP32_DIV_V1)
-#ifndef TOUCH_PROFILE_ID
-#define TOUCH_PROFILE_ID "ESP32_DIV_V1"
-#endif
-#ifndef TOUCH_X_MIN
-#define TOUCH_X_MIN 300
-#endif
-#ifndef TOUCH_X_MAX
-#define TOUCH_X_MAX 3800
-#endif
-#ifndef TOUCH_Y_MIN
-#define TOUCH_Y_MIN 300
-#endif
-#ifndef TOUCH_Y_MAX
-#define TOUCH_Y_MAX 3800
-#endif
-#elif defined(BOARD_ESP32_DIV_V2)
-#ifndef TOUCH_PROFILE_ID
-#define TOUCH_PROFILE_ID "ESP32_DIV_V2"
-#endif
-#ifndef TOUCH_X_MIN
-#define TOUCH_X_MIN 280
-#endif
-#ifndef TOUCH_X_MAX
-#define TOUCH_X_MAX 3850
-#endif
-#ifndef TOUCH_Y_MIN
-#define TOUCH_Y_MIN 320
-#endif
-#ifndef TOUCH_Y_MAX
-#define TOUCH_Y_MAX 3750
-#endif
-#elif defined(BOARD_ESP32_DIV_V3)
+#if defined(BOARD_ESP32_DIV_V3)
 #ifndef TOUCH_PROFILE_ID
 #define TOUCH_PROFILE_ID "ESP32_DIV_V3"
 #endif
@@ -257,26 +185,14 @@ static const uint8_t OBF_WB[]   = {75, 97, 110, 109, 122, 92, 109, 107, 96, 38, 
 #endif
 
 #ifndef TFT_ROTATION
-#if defined(BOARD_CYD) || defined(BOARD_ESP32_DIV_V1)
 #define TFT_ROTATION 0
-#else
-#define TFT_ROTATION 0
-#endif
 #endif
 
 #ifndef TOUCH_SHARES_TFT_SPI
-/* CYD uses a dedicated VSPI touch bus (T_CLK/T_DIN/T_OUT on 25/32/39); TFT stays on HSPI. */
 #define TOUCH_SHARES_TFT_SPI 0
 #endif
 
-#if defined(BOARD_CYD)
-#ifndef TOUCH_ROTATION
-/* Match TFT_ROTATION (RNT CYD test uses the same rotation for tft and touch). */
-#define TOUCH_ROTATION TFT_ROTATION
-#endif
-#endif
-
-/*©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤ I/O & Pins ©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ I/O & Pins ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 // PCF8574 I2C address: only enabled when board_config.h defines pcf_ADDR.
 #ifndef pcf_ADDR
 #define PCF8574_ENABLED 0
@@ -288,42 +204,16 @@ static const uint8_t OBF_WB[]   = {75, 97, 110, 109, 122, 92, 109, 107, 96, 38, 
 #define PCF8574_ADDR_MIN 0x20
 #define PCF8574_ADDR_MAX 0x27
 #ifndef PCF8574_I2C_SDA
-#if defined(BOARD_ESP32_DIV_V2) || defined(BOARD_ESP32_DIV_V3) || defined(BOARD_ESP32_DIV_V4)
 #define PCF8574_I2C_SDA 8
-#elif defined(BOARD_ESP32_DIV_V1)
-#define PCF8574_I2C_SDA 8
-#else
-#define PCF8574_I2C_SDA 8
-#endif
 #endif
 #ifndef PCF8574_I2C_SCL
-#if defined(BOARD_ESP32_DIV_V2) || defined(BOARD_ESP32_DIV_V3) || defined(BOARD_ESP32_DIV_V4)
-#define PCF8574_I2C_SCL 9
-#elif defined(BOARD_ESP32_DIV_V1)
-#define PCF8574_I2C_SCL 9
-#else
 #define PCF8574_I2C_SCL 9
 #endif
-#endif
-#if defined(BOARD_ESP32_DIV_V1)
-#define BTN_UP       6
-#define BTN_DOWN     3
-#define BTN_LEFT     4
-#define BTN_RIGHT    5
-#define BTN_SELECT   7
-#elif defined(BOARD_ESP32_DIV_V3) || defined(BOARD_ESP32_DIV_V4)
 #define BTN_UP       3
 #define BTN_DOWN     5
 #define BTN_LEFT     6
 #define BTN_RIGHT    4
 #define BTN_SELECT   7
-#else
-#define BTN_UP       7
-#define BTN_DOWN     5
-#define BTN_LEFT     3
-#define BTN_RIGHT    4
-#define BTN_SELECT   6
-#endif
 
 /* Buzzer */
 #ifndef BUZZER_PIN
@@ -342,13 +232,7 @@ static const uint8_t OBF_WB[]   = {75, 97, 110, 109, 122, 92, 109, 107, 96, 38, 
 
 /* Backlight / PWM */
 #ifndef BACKLIGHT_PIN
-#if defined(BOARD_CYD)
-#define BACKLIGHT_PIN   21
-#elif defined(BOARD_ESP32_DIV_V1)
-#define BACKLIGHT_PIN   32
-#else
 #define BACKLIGHT_PIN   7
-#endif
 #endif
 #define PWM_CHANNEL     0
 #define PWM_FREQ        5000
@@ -356,230 +240,96 @@ static const uint8_t OBF_WB[]   = {75, 97, 110, 109, 122, 92, 109, 107, 96, 38, 
 
 /* XPT2046 (Touch) SPI */
 #ifndef XPT2046_CS
-#if defined(BOARD_CYD)
-#define XPT2046_CS   33
-#elif defined(BOARD_ESP32_DIV_V1)
-#define XPT2046_CS   33
-#else
 #define XPT2046_CS   18
 #endif
-#endif
 #ifndef XPT2046_MOSI
-#if defined(BOARD_CYD)
-#define XPT2046_MOSI 32
-#elif defined(BOARD_ESP32_DIV_V1)
-#define XPT2046_MOSI 23
-#else
 #define XPT2046_MOSI 35
 #endif
-#endif
 #ifndef XPT2046_MISO
-#if defined(BOARD_CYD)
-#define XPT2046_MISO 39
-#elif defined(BOARD_ESP32_DIV_V1)
-#define XPT2046_MISO 19
-#else
 #define XPT2046_MISO 37
 #endif
-#endif
 #ifndef XPT2046_CLK
-#if defined(BOARD_CYD)
-#define XPT2046_CLK  25
-#elif defined(BOARD_ESP32_DIV_V1)
-#define XPT2046_CLK  18
-#else
 #define XPT2046_CLK  36
 #endif
-#endif
 #ifndef XPT2046_IRQ
-#if defined(BOARD_CYD)
-#define XPT2046_IRQ  36
-#else
 #define XPT2046_IRQ  255
-#endif
 #endif
 
 #ifndef XPT2046_HOST
-#if defined(BOARD_ESP32_DIV_V2)
-#define XPT2046_HOST SPI3_HOST
-#else
 #define XPT2046_HOST SPI2_HOST
-#endif
 #endif
 
 /* SD Card */
 #ifndef SD_CS
-#if defined(BOARD_CYD)
-#define SD_CS    5
-#elif defined(BOARD_ESP32_DIV_V1)
-#define SD_CS    5
-#else
 #define SD_CS    10
 #endif
-#endif
 #ifndef SD_MOSI
-#if defined(BOARD_CYD)
-#define SD_MOSI  23
-#elif defined(BOARD_ESP32_DIV_V1)
-#define SD_MOSI  23
-#else
 #define SD_MOSI  11
 #endif
-#endif
 #ifndef SD_MISO
-#if defined(BOARD_CYD)
-#define SD_MISO  19
-#elif defined(BOARD_ESP32_DIV_V1)
-#define SD_MISO  19
-#else
 #define SD_MISO  13
 #endif
-#endif
 #ifndef SD_SCLK
-#if defined(BOARD_CYD)
-#define SD_SCLK  18
-#elif defined(BOARD_ESP32_DIV_V1)
-#define SD_SCLK  18
-#else
 #define SD_SCLK  12
 #endif
-#endif
-#if !defined(BOARD_CYD) && !defined(BOARD_ESP32_DIV_V1) && !defined(SD_CD)
+#ifndef SD_CD
 #define SD_CD    38
 #endif
 #ifndef SD_CS_PIN
 #define SD_CS_PIN 5
 #endif
 
-/* PN532 RFID/NFC (SPI).
- * CYD has few spare GPIOs; these are suggested external wiring defaults.
- * Override any pin below if your wiring differs. Uses the project-native DivPn532 SPI driver. */
+/* PN532 RFID/NFC (SPI). Override any pin below if your wiring differs. */
 #ifndef PN532_SCK
-#if defined(BOARD_CYD)
-#define PN532_SCK  18
-#else
 #define PN532_SCK  12
 #endif
-#endif
 #ifndef PN532_MISO
-#if defined(BOARD_CYD)
-#define PN532_MISO 19
-#else
 #define PN532_MISO 11
 #endif
-#endif
 #ifndef PN532_MOSI
-#if defined(BOARD_CYD)
-#define PN532_MOSI 23
-#else
 #define PN532_MOSI 13
 #endif
-#endif
 #ifndef PN532_SS
-#if defined(BOARD_CYD)
-#define PN532_SS   25
-#else
 #define PN532_SS   4
-#endif
 #endif
 
 /* UART (if you use hardware serial on external pins) */
 #ifndef RX_PIN
-#if defined(BOARD_CYD)
-#define RX_PIN 35
-#elif defined(BOARD_ESP32_DIV_V1)
-#define RX_PIN 16
-#else
 #define RX_PIN 6
 #endif
-#endif
 #ifndef TX_PIN
-#if defined(BOARD_CYD)
-#define TX_PIN 22
-#elif defined(BOARD_ESP32_DIV_V1)
-#define TX_PIN 26
-#else
 #define TX_PIN 3
 #endif
-#endif
 
-/* Neo-6M GPS ¡ª GPS module TX ¡ú ESP RX, GPS RX ¡ú ESP TX (optional). Uses UART2 by default. */
+/* Neo-6M GPS ï¿½ï¿½ GPS module TX ï¿½ï¿½ ESP RX, GPS RX ï¿½ï¿½ ESP TX (optional). Uses UART2 by default. */
 #ifndef GPS_UART_RX
-#if defined(BOARD_CYD)
-#define GPS_UART_RX 35
-#elif defined(BOARD_ESP32_DIV_V1)
-#define GPS_UART_RX 3
-#else
 #define GPS_UART_RX 47
 #endif
-#endif
 #ifndef GPS_UART_TX
-#if defined(BOARD_CYD)
-#define GPS_UART_TX 22
-#elif defined(BOARD_ESP32_DIV_V1)
-#define GPS_UART_TX 1
-#else
 #define GPS_UART_TX 48
-#endif
 #endif
 
 /* CC1101 (Sub-GHz) */
 #ifndef CC1101_SCK
-#if defined(BOARD_CYD)
-#define CC1101_SCK  18
-#elif defined(BOARD_ESP32_DIV_V1)
-#define CC1101_SCK  18
-#else
 #define CC1101_SCK  12
 #endif
-#endif
 #ifndef CC1101_MISO
-#if defined(BOARD_CYD)
-#define CC1101_MISO 19
-#elif defined(BOARD_ESP32_DIV_V1)
-#define CC1101_MISO 19
-#else
 #define CC1101_MISO 13
 #endif
-#endif
 #ifndef CC1101_MOSI
-#if defined(BOARD_CYD)
-#define CC1101_MOSI 23
-#elif defined(BOARD_ESP32_DIV_V1)
-#define CC1101_MOSI 23
-#else
 #define CC1101_MOSI 11
 #endif
-#endif
 #ifndef CC1101_CS
-#if defined(BOARD_CYD)
-#define CC1101_CS   27
-#elif defined(BOARD_ESP32_DIV_V1)
-#define CC1101_CS   27
-#else
 #define CC1101_CS   5
-#endif
 #endif
 
 /* SubGHz (RCSwitch/Replay) data pins (wired to CC1101 GDO pins) */
 // Override these in your board config if your wiring differs.
 #ifndef SUBGHZ_RX_PIN
-#if defined(BOARD_CYD)
-#define SUBGHZ_RX_PIN 35
-#elif defined(BOARD_ESP32_DIV_V1)
-#define SUBGHZ_RX_PIN 16
-#else
 #define SUBGHZ_RX_PIN 3
 #endif
-#endif
 #ifndef SUBGHZ_TX_PIN
-#if defined(BOARD_CYD)
-#define SUBGHZ_TX_PIN 22
-#elif defined(BOARD_ESP32_DIV_V1)
-#define SUBGHZ_TX_PIN 26
-#else
 #define SUBGHZ_TX_PIN 6
-#endif
 #endif
 
 // CC1101 GDO mapping (used by DivCc1101Radio.setGDO).
@@ -598,58 +348,22 @@ static const uint8_t OBF_WB[]   = {75, 97, 110, 109, 122, 92, 109, 107, 96, 38, 
 
 /* NRF24 */
 #ifndef CE_PIN_1
-#if defined(BOARD_CYD)
-#define CE_PIN_1  16
-#elif defined(BOARD_ESP32_DIV_V1)
-#define CE_PIN_1  4
-#else
 #define CE_PIN_1  15
 #endif
-#endif
 #ifndef CSN_PIN_1
-#if defined(BOARD_CYD)
-#define CSN_PIN_1 17
-#elif defined(BOARD_ESP32_DIV_V1)
-#define CSN_PIN_1 5
-#else
 #define CSN_PIN_1 4
 #endif
-#endif
 #ifndef CE_PIN_2
-#if defined(BOARD_CYD)
-#define CE_PIN_2  22
-#elif defined(BOARD_ESP32_DIV_V1)
-#define CE_PIN_2  26
-#else
 #define CE_PIN_2  47
 #endif
-#endif
 #ifndef CSN_PIN_2
-#if defined(BOARD_CYD)
-#define CSN_PIN_2 27
-#elif defined(BOARD_ESP32_DIV_V1)
-#define CSN_PIN_2 27
-#else
 #define CSN_PIN_2 48
 #endif
-#endif
 #ifndef CE_PIN_3
-#if defined(BOARD_CYD)
-#define CE_PIN_3  4
-#elif defined(BOARD_ESP32_DIV_V1)
-#define CE_PIN_3  16
-#else
 #define CE_PIN_3  14
 #endif
-#endif
 #ifndef CSN_PIN_3
-#if defined(BOARD_CYD)
-#define CSN_PIN_3 25
-#elif defined(BOARD_ESP32_DIV_V1)
-#define CSN_PIN_3 17
-#else
 #define CSN_PIN_3 21
-#endif
 #endif
 
 /* IR Remote (Record/Replay)
@@ -657,28 +371,16 @@ static const uint8_t OBF_WB[]   = {75, 97, 110, 109, 122, 92, 109, 107, 96, 38, 
  * If you use NRF24 on CE_PIN_3/CSN_PIN_3, override these in your board config.
  */
 #ifndef IR_RX_PIN
-#if defined(BOARD_CYD)
-#define IR_RX_PIN 35
-#elif defined(BOARD_ESP32_DIV_V1)
-#define IR_RX_PIN 4
-#else
 #define IR_RX_PIN 21
 #endif
-#endif
 #ifndef IR_TX_PIN
-#if defined(BOARD_CYD)
-#define IR_TX_PIN 4
-#elif defined(BOARD_ESP32_DIV_V1)
-#define IR_TX_PIN 5
-#else
 #define IR_TX_PIN 14
-#endif
 #endif
 #ifndef IR_DEFAULT_KHZ
 #define IR_DEFAULT_KHZ 38
 #endif
 
-/*©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤ Display & Touch ©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Display & Touch ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 #ifndef TFT_WIDTH
 #define TFT_WIDTH 240
 #endif
@@ -696,7 +398,7 @@ static const uint8_t OBF_WB[]   = {75, 97, 110, 109, 122, 92, 109, 107, 96, 38, 
 #define STATUS_BAR_Y_OFFSET 0
 #endif
 
-/*©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤ Timing ©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Timing ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 #ifndef DEBOUNCE_MS
 #define DEBOUNCE_MS 40
 #endif
@@ -707,7 +409,7 @@ static const uint8_t OBF_WB[]   = {75, 97, 110, 109, 122, 92, 109, 107, 96, 38, 
 #define REPEAT_SCROLL_MS 120
 #endif
 
-/*©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤ Backlight Levels ©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Backlight Levels ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 #ifndef BKL_LEVEL_MIN
 #define BKL_LEVEL_MIN 10
 #endif
@@ -718,7 +420,7 @@ static const uint8_t OBF_WB[]   = {75, 97, 110, 109, 122, 92, 109, 107, 96, 38, 
 #define BKL_LEVEL_MAX 255
 #endif
 
-/*©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤ Filesystem ©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Filesystem ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 #ifndef FS_MOUNT_OK_MSG
 #define FS_MOUNT_OK_MSG "SD OK"
 #endif
@@ -732,7 +434,7 @@ static const uint8_t OBF_WB[]   = {75, 97, 110, 109, 122, 92, 109, 107, 96, 38, 
 #define CAPTURE_DIR "/captures"
 #endif
 
-/*©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤ Battery ©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Battery ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 #ifndef BATTERY_ADC_PIN
 #define BATTERY_ADC_PIN -1
 #endif
@@ -746,7 +448,7 @@ static const uint8_t OBF_WB[]   = {75, 97, 110, 109, 122, 92, 109, 107, 96, 38, 
 #define BATTERY_LOW_VOLT 3.40f
 #endif
 
-/*©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤ Wi-Fi ©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Wi-Fi ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 #ifndef WIFI_SCAN_ACTIVE_MS
 #define WIFI_SCAN_ACTIVE_MS  500
 #endif
@@ -757,7 +459,7 @@ static const uint8_t OBF_WB[]   = {75, 97, 110, 109, 122, 92, 109, 107, 96, 38, 
 #define WIFI_SPECTRUM_FFT_N  256
 #endif
 
-/*©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤ BLE ©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ BLE ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 #ifndef BLE_ADV_INTERVAL_MS
 #define BLE_ADV_INTERVAL_MS 100
 #endif
@@ -765,7 +467,7 @@ static const uint8_t OBF_WB[]   = {75, 97, 110, 109, 122, 92, 109, 107, 96, 38, 
 #define BLE_JAMMER_SWEEP_MS 80
 #endif
 
-/*©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤ Sub-GHz / RF ©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Sub-GHz / RF ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 #ifndef SUBGHZ_SAMPLE_RATE
 #define SUBGHZ_SAMPLE_RATE 38000
 #endif
@@ -782,7 +484,7 @@ static const uint8_t OBF_WB[]   = {75, 97, 110, 109, 122, 92, 109, 107, 96, 38, 
 #define CC1101_DEFAULT_MOD 2
 #endif
 
-/*©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤ Feature Flags ©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Feature Flags ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 #ifndef FEATURE_WIFI_TOOLS
 #define FEATURE_WIFI_TOOLS   1
 #endif
@@ -796,7 +498,7 @@ static const uint8_t OBF_WB[]   = {75, 97, 110, 109, 122, 92, 109, 107, 96, 38, 
 #define FEATURE_SUBGHZ_TOOLS 1
 #endif
 
-/*©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤ Utilities ©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Utilities ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 #ifndef ARRAY_SIZE
 #define ARRAY_SIZE(x) (sizeof(x)/sizeof((x)[0]))
 #endif
@@ -804,7 +506,7 @@ static const uint8_t OBF_WB[]   = {75, 97, 110, 109, 122, 92, 109, 107, 96, 38, 
 #define UNUSED(x) (void)(x)
 #endif
 
-/*©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤ Settings / Themes ©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Settings / Themes ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 enum class Theme : uint8_t { Dark = 0, Light = 1 };
 
 #ifndef NEOPIXEL_BRIGHT_MAX
@@ -816,13 +518,13 @@ enum class Theme : uint8_t { Dark = 0, Light = 1 };
 
 void displaySubmenu();
 
-/*©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤ Runtime UI Palette ©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Runtime UI Palette ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 struct UiPalette { uint16_t bg, fg, icon, text, accent, line, lable, warn, ok; };
 extern UiPalette UI;                   
 void applyThemeToPalette(Theme t);
 uint16_t uiUniversalColor();
 
-/*©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤ UI Text Helpers ©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ UI Text Helpers ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 // Dim label text color (used for *text* only).
 // Keep UI_LABLE unchanged because it's also used for fills (e.g., status bar bg).
 static inline uint16_t uiDimTextColor() {
@@ -833,7 +535,7 @@ static inline uint16_t uiDimTextColor() {
 #define UI_DIM_TEXT uiDimTextColor()
 #endif
 
-/*©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤ Global State Flags ©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Global State Flags ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 extern bool in_sub_menu;
 extern bool feature_active;
 extern bool submenu_initialized;

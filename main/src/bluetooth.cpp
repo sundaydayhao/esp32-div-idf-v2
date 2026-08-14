@@ -1,4 +1,4 @@
-#include "settings_store.h"
+ï»¿#include "settings_store.h"
 #include "touchscreen.h"
 #include "config.h"
 #include "freertos/FreeRTOS.h"
@@ -128,7 +128,7 @@ static bool uiDrawn = false;
 #undef STATUS_BAR_Y_OFFSET
 #define STATUS_BAR_Y_OFFSET 20
 #define STATUS_BAR_HEIGHT 16
-#define ICON_SIZE 16
+#define ICON_SIZE UI_ICON_SIZE
 #undef ICON_NUM
 #define ICON_NUM 5
 
@@ -914,7 +914,7 @@ static bool uiDrawn = false;
 #undef STATUS_BAR_Y_OFFSET
 #define STATUS_BAR_Y_OFFSET 20
 #define STATUS_BAR_HEIGHT 16
-#define ICON_SIZE 16
+#define ICON_SIZE UI_ICON_SIZE
 #undef ICON_NUM
 #define ICON_NUM 1
 
@@ -1320,7 +1320,7 @@ void updateTFT() {
   int spacing = 75;
 
   for (int i = 0; i < 3; i++) {
-    tft.drawBitmap(xPos, yPosIcon, buttons[i].icon, 16, 16, UI_ICON);
+    tft.drawBitmap(xPos, yPosIcon, buttons[i].icon, UI_ICON_SIZE, UI_ICON_SIZE, UI_ICON);
 
     tft.setTextColor(UI_TEXT, DARK_GRAY);
     tft.setCursor(xPos + 18, yPosIcon + 4);
@@ -1433,7 +1433,7 @@ namespace BleScan {
 #undef STATUS_BAR_Y_OFFSET
 #define STATUS_BAR_Y_OFFSET 20
 #define STATUS_BAR_HEIGHT 16
-#define ICON_SIZE 16
+#define ICON_SIZE UI_ICON_SIZE
 #undef ICON_NUM
 #define ICON_NUM 2
 
@@ -1999,7 +1999,7 @@ void bleScanSetup() {
 
   ensureBleInit();
 
-  // With auto BLE scan off, cached bleResults are not updated ¡ª only reuse when background scan is on.
+  // With auto BLE scan off, cached bleResults are not updated ï¿½ï¿½ only reuse when background scan is on.
   if (settings().autoBleScan && bgHasResults && bleResultsValid && bleResults.getCount() > 0) {
     current_page = 0;
     currentIndex = 0;
@@ -2369,7 +2369,7 @@ void runUI() {
 #undef STATUS_BAR_Y_OFFSET
 #define STATUS_BAR_Y_OFFSET 20
 #define STATUS_BAR_HEIGHT 16
-#define ICON_SIZE 16
+#define ICON_SIZE UI_ICON_SIZE
 #undef ICON_NUM
 #define ICON_NUM 3
 
@@ -3216,7 +3216,7 @@ void updateTFT() {
   int spacing = 75;
 
   for (int i = 0; i < 3; i++) {
-    tft.drawBitmap(xPos, yPosIcon, buttons[i].icon, 16, 16, UI_ICON);
+    tft.drawBitmap(xPos, yPosIcon, buttons[i].icon, UI_ICON_SIZE, UI_ICON_SIZE, UI_ICON);
 
     tft.setTextColor(UI_TEXT, DARK_GRAY);
     tft.setCursor(xPos + 18, yPosIcon + 4);
@@ -3392,7 +3392,7 @@ namespace BleSniffer {
 #undef STATUS_BAR_Y_OFFSET
 #define STATUS_BAR_Y_OFFSET 20
 #define STATUS_BAR_HEIGHT 16
-#define ICON_SIZE 16
+#define ICON_SIZE UI_ICON_SIZE
 #undef ICON_NUM
 #define ICON_NUM 3
 

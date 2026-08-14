@@ -1,4 +1,4 @@
-#include "keyboard_ui.h"
+ï»¿#include "keyboard_ui.h"
 #include "settings_store.h"
 #include "touchscreen.h"
 #include "config.h"
@@ -633,7 +633,7 @@ void runUI() {
 #undef STATUS_BAR_Y_OFFSET
 #define STATUS_BAR_Y_OFFSET 20
 #define STATUS_BAR_HEIGHT 16
-#define ICON_SIZE 16
+#define ICON_SIZE UI_ICON_SIZE
 #undef ICON_NUM
 #define ICON_NUM 3
 
@@ -1240,7 +1240,7 @@ void runUI() {
 #undef STATUS_BAR_Y_OFFSET
 #define STATUS_BAR_Y_OFFSET 20
 #define STATUS_BAR_HEIGHT 16
-#define ICON_SIZE 16
+#define ICON_SIZE UI_ICON_SIZE
 #undef ICON_NUM
 #define ICON_NUM 3
 
@@ -1495,7 +1495,7 @@ static int deauthVisibleLines() {
 #undef STATUS_BAR_Y_OFFSET
 #define STATUS_BAR_Y_OFFSET 20
 #define STATUS_BAR_HEIGHT 16
-#define ICON_SIZE 16
+#define ICON_SIZE UI_ICON_SIZE
 #undef ICON_NUM
 #define ICON_NUM 2
 
@@ -1964,7 +1964,7 @@ namespace WifiScan {
 #undef STATUS_BAR_Y_OFFSET
 #define STATUS_BAR_Y_OFFSET 20
 #define STATUS_BAR_HEIGHT 16
-#define ICON_SIZE 16
+#define ICON_SIZE UI_ICON_SIZE
 #undef ICON_NUM
 #define ICON_NUM 2
 
@@ -1984,7 +1984,7 @@ static volatile bool bgScanRunning = false;
 static volatile bool fgWifiScanInProgress = false;
 static uint32_t bgBootMs = 0;
 
-/** Stop an in-flight scan started by the background task only ¡ª never abort foreground/manual scans. */
+/** Stop an in-flight scan started by the background task only ï¿½ï¿½ never abort foreground/manual scans. */
 static void stopBgWifiScanIfRunning() {
   if (fgWifiScanInProgress) return;
   if (!bgScanRunning && DivWiFi.scanComplete() != WIFI_SCAN_RUNNING) return;
@@ -2044,7 +2044,7 @@ static void bgWifiScanTask(void* ) {
         }
       }
     } else {
-      // Only cancel our async background scan ¡ª sync feature scans also report RUNNING.
+      // Only cancel our async background scan ï¿½ï¿½ sync feature scans also report RUNNING.
       if (bgScanRunning) {
         stopBgWifiScanIfRunning();
       }
@@ -2651,7 +2651,7 @@ void wifiscanSetup() {
   }
 
   int existing = DivWiFi.scanComplete();
-  // With auto scan off, nothing refreshes the WiFi driver cache ¡ª reusing it shows stale/partial lists.
+  // With auto scan off, nothing refreshes the WiFi driver cache ï¿½ï¿½ reusing it shows stale/partial lists.
   if (settings().autoWifiScan && existing >= 0 && bgHasResults) {
     current_page = 0;
     currentIndex = 0;
@@ -3989,7 +3989,7 @@ void runUI() {
 #undef STATUS_BAR_Y_OFFSET
 #define STATUS_BAR_Y_OFFSET 20
 #define STATUS_BAR_HEIGHT 16
-#define ICON_SIZE 16
+#define ICON_SIZE UI_ICON_SIZE
 #undef ICON_NUM
 #define ICON_NUM 6
 
@@ -4748,7 +4748,7 @@ void runUI() {
 #undef STATUS_BAR_Y_OFFSET
 #define STATUS_BAR_Y_OFFSET 20
 #define STATUS_BAR_HEIGHT 16
-#define ICON_SIZE 16
+#define ICON_SIZE UI_ICON_SIZE
 #undef ICON_NUM
 #define ICON_NUM 2
 
@@ -5435,7 +5435,7 @@ void runUI() {
 #undef STATUS_BAR_Y_OFFSET
 #define STATUS_BAR_Y_OFFSET 20
 #define STATUS_BAR_HEIGHT 16
-#define ICON_SIZE 16
+#define ICON_SIZE UI_ICON_SIZE
 #undef ICON_NUM
 #define ICON_NUM 2
 
@@ -6083,7 +6083,7 @@ void runUI() {
 #undef STATUS_BAR_Y_OFFSET
 #define STATUS_BAR_Y_OFFSET 20
 #define STATUS_BAR_HEIGHT 16
-#define ICON_SIZE 16
+#define ICON_SIZE UI_ICON_SIZE
 #undef ICON_NUM
 #define ICON_NUM 1
 

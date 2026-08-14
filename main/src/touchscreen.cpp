@@ -29,11 +29,7 @@ static int s_injectedScreenY = 0;
 static uint8_t s_injectedScreenReads = 0;
 
 #ifndef TOUCH_ROTATION
-#if defined(BOARD_ESP32_DIV_V2)
-#define TOUCH_ROTATION 0
-#else
 #define TOUCH_ROTATION TFT_ROTATION
-#endif
 #endif
 
 static constexpr bool kTouchSharesTftSpi =
@@ -183,13 +179,8 @@ static void mapTouchToScreen(int16_t rawX, int16_t rawY, int& x, int& y) {
   int x0 = 0;
   int y0 = 0;
 
-#if defined(BOARD_CYD)
-  x0 = ::map(rawX, s.touchXMin, s.touchXMax, 0, TFT_WIDTH - 1);
-  y0 = ::map(rawY, s.touchYMin, s.touchYMax, 0, TFT_HEIGHT - 1);
-#else
   x0 = ::map(rawX, s.touchXMin, s.touchXMax, 0, TFT_WIDTH - 1);
   y0 = ::map(rawY, s.touchYMax, s.touchYMin, 0, TFT_HEIGHT - 1);
-#endif
 
   switch (TOUCH_ROTATION & 3) {
     case 0:

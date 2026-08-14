@@ -1,4 +1,4 @@
-#include <ir_recv.h>
+﻿#include <ir_recv.h>
 #include <ir_remote_esp8266.h>
 #include <ir_send.h>
 #include <ir_utils.h>
@@ -66,7 +66,7 @@ static constexpr uint16_t kKhz     = IR_DEFAULT_KHZ;
 
 static constexpr int16_t kToolbarY = 20;
 static constexpr int16_t kToolbarH = 16;
-static constexpr int16_t kIconSize = 16;
+static constexpr int16_t kIconSize = UI_ICON_SIZE;
 
 static constexpr int kIrToolbarBottom = 36;
 static constexpr int kIrToolbarGap = 8;
@@ -1822,7 +1822,7 @@ static void runUI() {
     tft.fillRect(0, 20, 240, 16, UI_FG);
     tft.drawLine(0, 20, 240, 20, UI_LINE);
     for (int i = 0; i < ICON_NUM; i++) {
-      if (icons[i]) tft.drawBitmap(iconX[i], iconY, icons[i], 16, 16, UI_ICON);
+      if (icons[i]) tft.drawBitmap(iconX[i], iconY, icons[i], UI_ICON_SIZE, UI_ICON_SIZE, UI_ICON);
     }
     tft.drawLine(0, 20 + 16, 240, 20 + 16, UI_LINE);
     uiDrawn = true;
@@ -1834,7 +1834,7 @@ static void runUI() {
 
   if (animationState > 0 && millis() - lastAnimationTime >= 150) {
     if (animationState == 1) {
-      tft.drawBitmap(iconX[activeIcon], iconY, icons[activeIcon], 16, 16, UI_ICON);
+      tft.drawBitmap(iconX[activeIcon], iconY, icons[activeIcon], UI_ICON_SIZE, UI_ICON_SIZE, UI_ICON);
       animationState = 2;
 
       switch (activeIcon) {
@@ -1890,7 +1890,7 @@ static void runUI() {
               if (i == 3) {
                 feature_exit_requested = true;
               } else {
-                tft.drawBitmap(iconX[i], iconY, icons[i], 16, 16, FEATURE_BG);
+                tft.drawBitmap(iconX[i], iconY, icons[i], UI_ICON_SIZE, UI_ICON_SIZE, FEATURE_BG);
                 animationState = 1;
                 activeIcon = i;
                 lastAnimationTime = millis();
@@ -1993,7 +1993,7 @@ static constexpr uint16_t kMaxProfiles = 500;
 
 static constexpr int16_t kToolbarY = 20;
 static constexpr int16_t kToolbarH = 16;
-static constexpr int16_t kIconSize = 16;
+static constexpr int16_t kIconSize = UI_ICON_SIZE;
 static constexpr int kToolbarBottom = kToolbarY + kToolbarH;
 static constexpr int kBodyTop = kToolbarBottom + 1;
 

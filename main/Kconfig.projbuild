@@ -6,15 +6,6 @@ choice ESP32_DIV_BOARD
     help
         Pick the physical board wiring profile used by this build.
 
-    config ESP32_DIV_BOARD_CYD
-        bool "CYD ESP32-2432S028R"
-
-    config ESP32_DIV_BOARD_V1
-        bool "ESP32-DIV V1"
-
-    config ESP32_DIV_BOARD_V2
-        bool "ESP32-DIV V2"
-
     config ESP32_DIV_BOARD_V3
         bool "ESP32-DIV V3"
 
@@ -24,10 +15,10 @@ endchoice
 
 config ESP32_DIV_TFT_PANEL_ILI9341
     bool "ILI9341"
-    default y if ESP32_DIV_BOARD_CYD || ESP32_DIV_BOARD_V1 || ESP32_DIV_BOARD_V2 || ESP32_DIV_BOARD_V3
-    depends on ESP32_DIV_BOARD_CYD || ESP32_DIV_BOARD_V1 || ESP32_DIV_BOARD_V2 || ESP32_DIV_BOARD_V3
+    default y if ESP32_DIV_BOARD_V3
+    depends on ESP32_DIV_BOARD_V3
     help
-        3.2-inch panels on CYD/V1/V2/V3 use ILI9341.
+        3.2-inch panels on V3 use ILI9341.
 
 config ESP32_DIV_TFT_PANEL_ST7796
     bool "ST7796 / ST7796S"
@@ -38,8 +29,7 @@ config ESP32_DIV_TFT_PANEL_ST7796
 
 config ESP32_DIV_PCF8574_ENABLED
     bool "Enable PCF8574 button expander"
-    default y if ESP32_DIV_BOARD_V1 || ESP32_DIV_BOARD_V2 || ESP32_DIV_BOARD_V3 || ESP32_DIV_BOARD_V4
-    default n if ESP32_DIV_BOARD_CYD
+    default y
     help
         Disable this if your board has no PCF8574 button expander.
 

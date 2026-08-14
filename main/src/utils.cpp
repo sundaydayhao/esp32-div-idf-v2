@@ -1,4 +1,4 @@
-#include "div_sd.h"
+﻿#include "div_sd.h"
 #include "div_spi.h"
 #include <algorithm>
 #include <cmath>
@@ -689,21 +689,21 @@ void drawStatusBar(float batteryVoltage, bool forceUpdate, bool bottomSeparator)
       }
     }
 
-    tft.drawBitmap(bleIconX + 25, iconY, bitmap_icon_ble, 16, 16, bleColor);
+    tft.drawBitmap(bleIconX + 25, iconY, bitmap_icon_ble, UI_ICON_SIZE, UI_ICON_SIZE, bleColor);
     tft.setTextColor(bleColor, UI_LABLE);
 
     if (internalTemp == 53.33f) {
-      tft.drawBitmap(tempIconX + 10, y - 2, bitmap_icon_temp, 16, 16, TFT_YELLOW);
+      tft.drawBitmap(tempIconX + 10, y - 2, bitmap_icon_temp, UI_ICON_SIZE, UI_ICON_SIZE, TFT_YELLOW);
     } else if (internalTemp > 55) {
-      tft.drawBitmap(tempIconX + 10, y - 2, bitmap_icon_temp, 16, 16, TFT_RED);
+      tft.drawBitmap(tempIconX + 10, y - 2, bitmap_icon_temp, UI_ICON_SIZE, UI_ICON_SIZE, TFT_RED);
     } else {
-      tft.drawBitmap(tempIconX + 10, y - 2, bitmap_icon_temp, 16, 16, TFT_GREEN);
+      tft.drawBitmap(tempIconX + 10, y - 2, bitmap_icon_temp, UI_ICON_SIZE, UI_ICON_SIZE, TFT_GREEN);
     }
 
     if (sdCardPresent) {
-      tft.drawBitmap(sdIconX + 10, y - 2, bitmap_icon_sdcard, 16, 16, TFT_GREEN);
+      tft.drawBitmap(sdIconX + 10, y - 2, bitmap_icon_sdcard, UI_ICON_SIZE, UI_ICON_SIZE, TFT_GREEN);
     } else {
-      tft.drawBitmap(sdIconX + 10, y - 2, bitmap_icon_nullsdcard, 16, 16, TFT_RED);
+      tft.drawBitmap(sdIconX + 10, y - 2, bitmap_icon_nullsdcard, UI_ICON_SIZE, UI_ICON_SIZE, TFT_RED);
     }
 
     if (bottomSeparator) {
@@ -1440,7 +1440,7 @@ void runUI() {
 #undef STATUS_BAR_Y_OFFSET
     #define STATUS_BAR_Y_OFFSET 20
     #define STATUS_BAR_HEIGHT 16
-    #define ICON_SIZE 16
+    #define ICON_SIZE UI_ICON_SIZE
 #undef ICON_NUM
     #define ICON_NUM 3
 
@@ -3194,13 +3194,8 @@ static void saveCalibration(){
   if (rangesOk) {
     s.touchXMin = xLeft;
     s.touchXMax = xRight;
-#if defined(BOARD_CYD)
-    s.touchYMin = yTop;
-    s.touchYMax = yBottom;
-#else
     s.touchYMin = yBottom;
     s.touchYMax = yTop;
-#endif
     ok = settingsSave();
   }
 

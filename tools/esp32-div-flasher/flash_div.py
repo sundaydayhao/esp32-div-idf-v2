@@ -278,22 +278,10 @@ PRESETS: dict[str, dict] = {
         "flash_mode": "dio",
         "flash_freq": "80m",
     },
-    "esp32": {
-        "chip": "esp32",
-        "offsets": {
-            "bootloader": 0x1000,
-            "partition_table": 0x8000,
-            "boot_app0": 0xE000,
-            "app": 0x10000,
-        },
-        "flash_mode": "dio",
-        "flash_freq": "40m",
-    },
 }
 
 PRESET_LABELS: dict[str, str] = {
-    "esp32s3": "ESP32-S3 (ESP32-DIV v2)",
-    "esp32": "ESP32 (CYD & ESP32-DIV v1)",
+    "esp32s3": "ESP32-S3 (ESP32-DIV V3/V4)",
 }
 
 
@@ -301,15 +289,11 @@ def infer_preset_from_app_bin(path: Path | str) -> Optional[str]:
     """
     Guess bundled preset from a release/application .bin filename.
 
-    Multi-board GitHub assets use names like ESP32-DIV-{cyd|v1|v2}-v1.7.0.bin.
-    CYD and v1 targets are classic ESP32; v2 is ESP32-S3.
+    Supported GitHub assets use names like ESP32-DIV-{v3|v4}-v1.7.0.bin.
+    V3 and V4 targets are ESP32-S3.
     """
     stem = Path(path).stem.lower()
-    if "-cyd-" in stem or stem.endswith("-cyd"):
-        return "esp32"
-    if re.search(r"-v1-v\d", stem):
-        return "esp32"
-    if re.search(r"-v2-v\d", stem):
+    if re.search(r"-v[34]-v\d", stem):
         return "esp32s3"
     return None
 
@@ -1540,8 +1524,8 @@ def _gui() -> None:
         "Quick start\n\n"
         "\u2460  Connection — Choose the COM port for your board (often labeled CP210x or USB-SERIAL). "
         "Use Refresh if the list is empty. Unplug/replug USB or install the USB–UART driver if needed.\n\n"
-        "\u2461  Board preset — Auto-set when you pick a GitHub release (CYD/v1 → ESP32, v2 → ESP32-S3). "
-        "For older single-file releases, choose ESP32-S3 (v2) or ESP32 (CYD & v1) manually.\n\n"
+        "\u2461  Board preset — Auto-set when you pick a V3/V4 GitHub release. "
+        "For older single-file releases, choose ESP32-S3 manually.\n\n"
         "\u2462  Firmware source — Pick one of the two flashing tabs:\n"
         "   \u2022  ESP-IDF build — Project root or build/ folder produced by idf.py build.\n"
         "   \u2022  Toolbox / GitHub — Uses bundled bootloader/partitions/boot_app0. "

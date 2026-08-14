@@ -1,4 +1,4 @@
-#include "div_serial.h"
+ï»¿#include "div_serial.h"
 #include "div_display.h"
 #include <math.h>
 #include <stdint.h>
@@ -683,7 +683,7 @@ void drawSkyPlotGx(Gfx& g, int cx, int cy, int R) {
       seed ^= seed >> 16;
       seed *= 2654435761u;
       az = (int16_t)(seed % 360u);
-      el = (int16_t)(12 + ((seed >> 11) % 34u)); // 12¡ã¨C45¡ã (inside horizon ring)
+      el = (int16_t)(12 + ((seed >> 11) % 34u)); // 12ï¿½ï¿½C45ï¿½ï¿½ (inside horizon ring)
       posEstimated = true;
     }
 
@@ -713,7 +713,7 @@ void drawSkyPlotGx(Gfx& g, int cx, int cy, int R) {
     if (rows[i].inSolution) {
       g.drawCircle(sx, sy, mr + 2, WHITE);
     }
-    // PRNs are listed in SNR strip ¡ª avoids overlapping labels on sky plot.
+    // PRNs are listed in SNR strip ï¿½ï¿½ avoids overlapping labels on sky plot.
   }
 }
 
@@ -1296,7 +1296,7 @@ void session() {
     delay(2);
   }
 
-  // Do not delete gScanPanel here ¡ª releasing ~140 KiB fragments heap and often
+  // Do not delete gScanPanel here ï¿½ï¿½ releasing ~140 KiB fragments heap and often
   // prevents createSprite() from succeeding when re-entering this screen.
 
   gpsSerial.end();
@@ -1319,8 +1319,8 @@ namespace GpsWardriver {
 
 /** Same top strip style as the other features: 20px status bar + 16px DARK_GRAY icon row. */
 static constexpr int kWardIconRowY = 20;
-static constexpr int kWardIconRowH = 16;
-static constexpr int kWardIconSz = 16;
+static constexpr int kWardIconRowH = UI_ICON_SIZE;
+static constexpr int kWardIconSz = UI_ICON_SIZE;
 static constexpr int kWardBodyY = kWardIconRowY + kWardIconRowH + 4;
 static constexpr int kWardUiRadius = 3;
 static constexpr int kWardInnerPad = 5;
@@ -1341,7 +1341,7 @@ static int wardContentBottom() {
 }
 
 static constexpr int kWardCardIconCol = 24;
-static constexpr int kWardCardIconSz = 16;
+static constexpr int kWardCardIconSz = UI_ICON_SIZE;
 static constexpr int kWardTextLineH = 8;
 
 static int wardCardIconY(int cardY, int cardH) {
@@ -2124,7 +2124,7 @@ static void wardDrawBody(uint32_t linesWr, uint32_t scans, const char* path, boo
   tft.fillRoundRect(pad, layout.heroY, cardW, layout.heroH, kWardUiRadius, UI_FG);
   tft.drawRoundRect(pad, layout.heroY, cardW, layout.heroH, kWardUiRadius, UI_LINE);
   tft.fillRoundRect(pad + 3, innerY, 3, layout.heroH - kWardInnerPad * 2, 2, ORANGE);
-  tft.drawBitmap(pad + kWardInnerPad, innerY, bitmap_icon_satellite, 16, 16, UI_ICON);
+  tft.drawBitmap(pad + kWardInnerPad, innerY, bitmap_icon_satellite, UI_ICON_SIZE, UI_ICON_SIZE, UI_ICON);
   tft.setTextFont(1);
   tft.setTextColor(UI_TEXT, UI_FG);
   tft.drawString("Wardrive", textX, innerY + 1);
@@ -2250,11 +2250,11 @@ static void wardDrawBody(uint32_t linesWr, uint32_t scans, const char* path, boo
   const int radioIconY = layout.radioY + (layout.radioH - 16) / 2;
   int ix = pad + kWardInnerPad;
   if (rm == WardRadioMode::WiFi || rm == WardRadioMode::Both) {
-    tft.drawBitmap(ix, radioIconY, bitmap_icon_wifi, 16, 16, rm == WardRadioMode::WiFi ? ORANGE : UI_DIM_TEXT);
+    tft.drawBitmap(ix, radioIconY, bitmap_icon_wifi, UI_ICON_SIZE, UI_ICON_SIZE, rm == WardRadioMode::WiFi ? ORANGE : UI_DIM_TEXT);
     ix += 20;
   }
   if (rm == WardRadioMode::Ble || rm == WardRadioMode::Both) {
-    tft.drawBitmap(ix, radioIconY, bitmap_icon_ble, 16, 16, rm == WardRadioMode::Ble ? ORANGE : UI_DIM_TEXT);
+    tft.drawBitmap(ix, radioIconY, bitmap_icon_ble, UI_ICON_SIZE, UI_ICON_SIZE, rm == WardRadioMode::Ble ? ORANGE : UI_DIM_TEXT);
   }
   tft.setTextFont(1);
   tft.setTextColor(UI_TEXT, UI_FG);
@@ -3108,7 +3108,7 @@ static void wardPerformWigleUpload(const char* srcCsvPath, DivFile* liveLog) {
   bool useStoredWifi = false;
   if (!wardReadWigleConfig(apiUser, sizeof(apiUser), apiTok, sizeof(apiTok), staSsid, sizeof(staSsid), staPass,
                            sizeof(staPass), &useStoredWifi)) {
-    wardNotify("WiGLE", "SD:/config/wigle.txt ¡ª line1: WiGLE API name, line2: token. If this ESP32 already "
+    wardNotify("WiGLE", "SD:/config/wigle.txt ï¿½ï¿½ line1: WiGLE API name, line2: token. If this ESP32 already "
                         "joined Wi?Fi once, stop at line 2. Else add line3=SSID line4=password. Optional "
                         "line3 AUTO or - uses saved Wi?Fi only.");
     return;
@@ -3148,7 +3148,7 @@ static void wardPerformWigleUpload(const char* srcCsvPath, DivFile* liveLog) {
   }
   if (!gotIp) {
     wardNotify("WiGLE", useStoredWifi ? "WiFi failed. Connect this device to Wi?Fi once in another tool, "
-                                        "or add SSID + password on lines 3¨C4 of wigle.txt."
+                                        "or add SSID + password on lines 3ï¿½C4 of wigle.txt."
                                       : "WiFi connect failed (check wigle.txt SSID/pass).");
     DivWiFi.disconnect();
     delay(100);
@@ -3619,7 +3619,7 @@ static bool wardSessionShouldExit() {
     return true;
   }
   if (featureHasTouchNavBar()) {
-    /* Center nav is Save or Exit by page ¡ª use wardPollNavButtons, not raw SELECT. */
+    /* Center nav is Save or Exit by page ï¿½ï¿½ use wardPollNavButtons, not raw SELECT. */
     return isPhysicalButtonPressed(BTN_SELECT);
   }
   return isButtonPressed(BTN_SELECT) || touchRequestsExit();

@@ -1,4 +1,4 @@
-#include <nimble_device.h>
+ï»¿#include <nimble_device.h>
 #include <nimble_hid_device.h>
 #include "div_sd.h"
 #include "div_spi.h"
@@ -120,7 +120,7 @@ static const unsigned char* icons[ICON_NUM] = {
     bitmap_icon_go_back
 };
 
-static const int ICON_SIZE = 16;
+static const int ICON_SIZE = UI_ICON_SIZE;
 
 static bool pcfPressedEdge(EdgeBtn& eb, uint16_t debounceMs=40) {
   bool cur = isButtonPressed(eb.pin) ? LOW : HIGH;
@@ -175,7 +175,7 @@ static DivString fitText(const DivString& s, int pixWidth, int font = 2) {
   while (tft.textWidth(out, font) > pixWidth && out.length() > 1) {
     out.remove(out.length() - 1);
   }
-  if (out.length() < s.length() && pixWidth >= tft.textWidth("¡­", font) + 4) out += "¡­";
+  if (out.length() < s.length() && pixWidth >= tft.textWidth("ï¿½ï¿½", font) + 4) out += "ï¿½ï¿½";
   return out;
 }
 
@@ -539,7 +539,7 @@ static bool execFile(const DivString& path) {
   const int execTop = TOOLBAR_Y + HEADER_H + HEADER_H + 1;
   tft.fillRect(0, execTop, DISPLAY_WIDTH, DISPLAY_HEIGHT - execTop, COL_BG);
   tft.setTextColor(COL_FG, COL_BG);
-  tft.drawCentreString("Executing¡­", DISPLAY_WIDTH/2, execTop + 4, 1);
+  tft.drawCentreString("Executingï¿½ï¿½", DISPLAY_WIDTH/2, execTop + 4, 1);
   tft.drawString("File:", PADDING, execTop + 24, 1);
   tft.drawString(path, 48, execTop + 24, 1);
 
