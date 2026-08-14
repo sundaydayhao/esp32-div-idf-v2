@@ -1,0 +1,100 @@
+menu "ESP32-DIV Board Configuration"
+
+choice ESP32_DIV_BOARD
+    prompt "Select target board"
+    default ESP32_DIV_BOARD_V3
+    help
+        Pick the physical board wiring profile used by this build.
+
+    config ESP32_DIV_BOARD_CYD
+        bool "CYD ESP32-2432S028R"
+
+    config ESP32_DIV_BOARD_V1
+        bool "ESP32-DIV V1"
+
+    config ESP32_DIV_BOARD_V2
+        bool "ESP32-DIV V2"
+
+    config ESP32_DIV_BOARD_V3
+        bool "ESP32-DIV V3"
+
+    config ESP32_DIV_BOARD_V4
+        bool "ESP32-DIV V4"
+endchoice
+
+config ESP32_DIV_TFT_PANEL_ILI9341
+    bool "ILI9341"
+    default y if ESP32_DIV_BOARD_CYD || ESP32_DIV_BOARD_V1 || ESP32_DIV_BOARD_V2 || ESP32_DIV_BOARD_V3
+    depends on ESP32_DIV_BOARD_CYD || ESP32_DIV_BOARD_V1 || ESP32_DIV_BOARD_V2 || ESP32_DIV_BOARD_V3
+    help
+        3.2-inch panels on CYD/V1/V2/V3 use ILI9341.
+
+config ESP32_DIV_TFT_PANEL_ST7796
+    bool "ST7796 / ST7796S"
+    default y if ESP32_DIV_BOARD_V4
+    depends on ESP32_DIV_BOARD_V4
+    help
+        4-inch panels on V4 use ST7796/ST7796S.
+
+config ESP32_DIV_PCF8574_ENABLED
+    bool "Enable PCF8574 button expander"
+    default y if ESP32_DIV_BOARD_V1 || ESP32_DIV_BOARD_V2 || ESP32_DIV_BOARD_V3 || ESP32_DIV_BOARD_V4
+    default n if ESP32_DIV_BOARD_CYD
+    help
+        Disable this if your board has no PCF8574 button expander.
+
+config ESP32_DIV_PCF8574_ADDR
+    hex "PCF8574 I2C address"
+    default 0x20
+    depends on ESP32_DIV_PCF8574_ENABLED
+    help
+        I2C address used for the PCF8574 button expander.
+
+config ESP32_DIV_TOUCH_BUTTON_CUE_ENABLED
+    int "Show on-screen touch nav bar"
+    default 1
+    range 0 1
+    help
+        Set to 0 to hide the footer touch navigation bar.
+
+config ESP32_DIV_BUZZER_PIN
+    int "Buzzer GPIO"
+    default 2
+    range -1 48
+    help
+        Set to -1 to disable buzzer initialization.
+
+config ESP32_DIV_BUZZER_USE_PWM
+    bool "Use PWM for buzzer"
+    default n
+    help
+        Disable PWM for active buzzers that only need a digital output.
+
+config ESP32_DIV_BUZZER_ACTIVE_LEVEL
+    int "Buzzer active level"
+    default 1
+    range 0 1
+    help
+        GPIO level that makes the buzzer sound.
+
+config ESP32_DIV_TFT_ROTATION
+    int "TFT rotation"
+    default 0
+    range 0 3
+    help
+        Rotation applied to both TFT and touch input.
+
+config ESP32_DIV_UI_SELF_TEST
+    bool "Build UI self-test harness"
+    default n
+    help
+        Build the isolated UI traversal harness used for hardware debug.
+
+config ESP32_DIV_UI_SELF_TEST_AUTO_RUN
+    bool "Auto-run UI self-test after boot"
+    depends on ESP32_DIV_UI_SELF_TEST
+    default n
+    help
+        Start the UI traversal harness once, four seconds after boot.
+
+endmenu

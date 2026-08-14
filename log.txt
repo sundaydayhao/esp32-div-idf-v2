@@ -1,0 +1,36 @@
+I (8438) esp32_div_touch: raw touch x=1561 y=2843 z=420 samples=5 irq=1
+
+abort() was called at PC 0x42112dfa on core 0
+--- 0x42112dfa: __wrap___cxa_allocate_exception at C:/esp/v5.5.5/esp-idf/components/cxx/cxx_exception_stubs.cpp:184
+
+
+Backtrace: 0x40384289:0x3fcc3d00 0x40384251:0x3fcc3d20 0x4038d78d:0x3fcc3d40 0x42112dfa:0x3fcc3db0 0x421121c9:0x3fcc3dd0 0x4204d899:0x3fcc3df0 0x4204d8ae:0x3fcc3e10 0x4204d9f9:0x3fcc3e30 0x4204da3e:0x3fcc3e50 0x4204dae3:0x3fcc3e80 0x420207b3:0x3fcc3eb0 0x420222a0:0x3fcc3ee0 0x420126fb:0x3fcc3f00 0x420131a1:0x3fcc3f20 0x42013239:0x3fcc3f50 0x420135fa:0x3fcc3fa0 0x4200e3e9:0x3fcc3fc0 0x4212fddf:0x3fcc3fe0 0x40385015:0x3fcc4010
+--- 0x40384289: panic_abort at C:/esp/v5.5.5/esp-idf/components/esp_system/panic.c:477
+--- 0x40384251: esp_system_abort at C:/esp/v5.5.5/esp-idf/components/esp_system/port/esp_system_chip.c:87
+--- 0x4038d78d: abort at C:/esp/v5.5.5/esp-idf/components/newlib/src/abort.c:38
+--- 0x42112dfa: __wrap___cxa_allocate_exception at C:/esp/v5.5.5/esp-idf/components/cxx/cxx_exception_stubs.cpp:184
+--- 0x421121c9: operator new(unsigned int) at /builds/idf/crosstool-NG/.build/xtensa-esp-elf/src/gcc/libstdc++-v3/libsupc++/new_op.cc:54
+--- 0x4204d899: std::__new_allocator<unsigned short>::allocate(unsigned int, void const*) at C:/Espressif/tools/xtensa-esp-elf/esp-14.2.0_20260121/xtensa-esp-elf/xtensa-esp-elf/include/c++/14.2.0/bits/new_allocator.h:151
+--- 0x4204d8ae: std::allocator<unsigned short>::allocate(unsigned int) at C:/Espressif/tools/xtensa-esp-elf/esp-14.2.0_20260121/xtensa-esp-elf/xtensa-esp-elf/include/c++/14.2.0/bits/allocator.h:196
+--- (inlined by) std::allocator_traits<std::allocator<unsigned short> >::allocate(std::allocator<unsigned short>&, unsigned int) at C:/Espressif/tools/xtensa-esp-elf/esp-14.2.0_20260121/xtensa-esp-elf/xtensa-esp-elf/include/c++/14.2.0/bits/alloc_traits.h:478
+--- (inlined by)
+
+
+
+ELF file SHA256: f38abe6df
+std::_Vector_base<unsigned short, std::allocator<unsigned short> >::_M_allocate(unsigned int) at C:/Espressif/tools/xtensa-esp-elf/esp-14.2.0_20260121/xtensa-esp-elf/xtensa-esp-elf/include/c++/14.2.0/bits/stl_vector.h:380
+--- (inlined by) std::_Vector_base<unsigned short, std::allocator<unsigned short> >::_M_create_storage(unsigned int) at C:/Espressif/tools/xtensa-esp-elf/esp-14.2.0_20260121/xtensa-esp-elf/xtensa-esp-elf/include/c++/14.2.0/bits/stl_vector.h:398
+--- 0x4204d9f9: std::_Vector_base<unsigned short, std::allocator<unsigned short> >::_Vector_base(unsigned int, std::allocator<unsigned short> const&) at C:/Espressif/tools/xtensa-esp-elf/esp-14.2.0_20260121/xtensa-esp-elf/xtensa-esp-elf/include/c++/14.2.0/bits/stl_vector.h:334
+--- (inlined by) std::vector<unsigned short, std::allocator<unsigned short> >::vector(unsigned int, unsigned short const&, std::allocator<unsigned short> const&) at C:/Espressif/tools/xtensa-esp-elf/esp-14.2.0_20260121/xtensa-esp-elf/xtensa-esp-elf/include/c++/14.2.0/bits/stl_vector.h:571
+--- 0x4204da3e: std::vector<unsigned short, std::allocator<unsigned short> >::_M_fill_assign(unsigned int, unsigned short const&) at C:/Espressif/tools/xtensa-esp-elf/esp-14.2.0_20260121/xtensa-esp-elf/xtensa-esp-elf/include/c++/14.2.0/bits/vector.tcc:278
+--- 0x4204dae3: std::vector<unsigned short, std::allocator<unsigned short> >::assign(unsigned int, unsigned short const&) at C:/Espressif/tools/xtensa-esp-elf/esp-14.2.0_20260121/xtensa-esp-elf/xtensa-esp-elf/include/c++/14.2.0/bits/stl_vector.h:809
+--- (inlined by) DivSprite::createSprite(short, short) at C:/projects/esp32-div-idf/main/src/DivDisplay.cpp:536
+--- 0x420207b3: ensureScanPanelSprite(int, int) at C:/projects/esp32-div-idf/main/src/gps.cpp:63
+--- 0x420222a0: GpsSatelliteScanner::session() at C:/projects/esp32-div-idf/main/src/gps.cpp:1272
+--- 0x420126fb: otherGpsPlaceholderAction(int) at C:/projects/esp32-div-idf/main/src/app.cpp:2771
+--- 0x420131a1: handleOtherSubmenuButtons() at C:/projects/esp32-div-idf/main/src/app.cpp:3236
+--- 0x42013239: handleButtons() at C:/projects/esp32-div-idf/main/src/app.cpp:3366
+--- 0x420135fa: esp32_div_app_run_once() at C:/projects/esp32-div-idf/main/src/app.cpp:3564
+--- 0x4200e3e9: app_main at C:/projects/esp32-div-idf/main/main.cpp:40
+--- 0x4212fddf: main_task at C:/esp/v5.5.5/esp-idf/components/freertos/app_startup.c:215
+--- 0x40385015: vPortTaskWrapper at C:/esp/v5.5.5/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/port.c:143
