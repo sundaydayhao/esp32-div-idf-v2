@@ -1,0 +1,75 @@
+menu "ESP32-DIV hardware"
+choice DIV_BOARD
+    prompt "Board revision"
+    default DIV_BOARD_V3
+config DIV_BOARD_V3
+    bool "V3"
+config DIV_BOARD_V4
+    bool "V4"
+endchoice
+choice DIV_PANEL
+    prompt "LCD controller (check module label)"
+    default DIV_PANEL_ILI9341 if DIV_BOARD_V3
+    default DIV_PANEL_ST7796 if DIV_BOARD_V4
+config DIV_PANEL_ILI9341
+    bool "ILI9341 240 x 320"
+config DIV_PANEL_ST7796
+    bool "ST7796 / ST7796S 320 x 480"
+endchoice
+config DIV_ROTATION
+    int "Screen rotation (quarter turns clockwise)"
+    range 0 3
+    default 0
+choice DIV_GPIO2_ROLE
+    prompt "GPIO2 population (shared battery divider / buzzer)"
+    default DIV_GPIO2_BUZZER
+config DIV_GPIO2_DISABLED
+    bool "Unconfirmed hardware; leave GPIO2 as input"
+config DIV_GPIO2_BATTERY
+    bool "Battery ADC (buzzer transistor must be isolated)"
+config DIV_GPIO2_BUZZER
+    bool "Buzzer output (battery divider must be isolated)"
+endchoice
+choice DIV_GPIO14_21_ROLE
+    prompt "GPIO14/21 population (IR / third NRF24)"
+    default DIV_NRF3_ENABLED
+config DIV_IR_ENABLED
+    bool "IR (NRF24 #3 must be disconnected)"
+config DIV_NRF3_ENABLED
+    bool "NRF24 #3 (IR transmitter / receiver must be disconnected)"
+endchoice
+config DIV_GPS_ENABLED
+    bool "External GPS connected"
+    default n
+config DIV_GPS_RX
+    int "GPS UART RX GPIO (connect GPS TX here)"
+    depends on DIV_GPS_ENABLED
+    range 0 48
+    default 40
+config DIV_GPS_TX
+    int "GPS UART TX GPIO (-1 for receive only)"
+    depends on DIV_GPS_ENABLED
+    range -1 48
+    default -1
+config DIV_GPS_BAUD
+    int "GPS baud rate"
+    depends on DIV_GPS_ENABLED
+    range 1200 115200
+    default 9600
+config DIV_PN532_ENABLED
+    bool "External PN532 connected to I2C address 0x24"
+    default n
+config DIV_SERIAL_ENABLED
+    bool "External serial monitor UART connected"
+    default n
+config DIV_SERIAL_RX
+    int "Serial monitor RX GPIO"
+    depends on DIV_SERIAL_ENABLED
+    range 0 48
+    default 41
+config DIV_SERIAL_TX
+    int "Serial monitor TX GPIO"
+    depends on DIV_SERIAL_ENABLED
+    range -1 48
+    default 42
+endmenu
