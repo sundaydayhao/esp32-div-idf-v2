@@ -1,6 +1,6 @@
 ﻿# ESP32-DIV IDF v2
 
-ESP32-DIV 的 ESP-IDF 版本工程，面向 ESP32-S3 平台，提供统一的无线工具、显示界面、存储管理和设备配置能力。
+ESP32-DIV 的 C / ESP-IDF 工程，使用 ESP-IDF 5.5.x（本机为 v5.5.5），面向 ESP32-S3 的 V3、V4 板型，提供无线工具、显示界面、存储管理和设备配置能力。
 
 ## 项目结构
 
@@ -13,23 +13,30 @@ ESP32-DIV 的 ESP-IDF 版本工程，面向 ESP32-S3 平台，提供统一的无
 
 ## 构建与烧录
 
-V3（ILI9341，240×320）使用独立构建目录；端口按设备管理器中的实际端口填写：
+构建脚本默认使用 `C:\esp\v5.5.5\esp-idf`，优先加载本机 EIM 安装的 v5.5.5 PowerShell 环境。手动打开环境的正确命令是：
 
 ```powershell
-./tools/build.ps1 -Board v3 -BuildDirectory build/v3-ui -Flash -Port COM26
+powershell.exe -NoExit -ExecutionPolicy Bypass -NoProfile -Command "& { . 'C:\Espressif\tools\Microsoft.v5.5.5.PowerShell_profile.ps1' }"
 ```
 
-已有根目录 `sdkconfig` 的自定义配置时，先复制到该构建目录的 `sdkconfig`，脚本会保留其中的配置。V4 可使用 `-Board v4`，不要将 V4 镜像烧到 V3。
+在项目目录分别编译两种板型：
 
-V4（ST7796，320×480）使用另一构建目录，例如 `./tools/build.ps1 -Board v4 -BuildDirectory build/v4-ui -Flash -Port COM16`。V3 仍使用 `build/v3-ui`；各目录保存自己的 `sdkconfig`，切换根目录板型配置不影响已保存的另一板型构建配置。
-
-在已配置好 ESP-IDF 环境的终端中也可直接使用：
-
-```bash
-idf.py set-target esp32s3
-idf.py build
-idf.py flash monitor
+```powershell
+./tools/build.ps1 -Board v3
+./tools/build.ps1 -Board v4
 ```
+
+V3（ILI9341，240×320）的固件位于 `build/idf55-v3/esp32_div.bin`，V4（ST7796，320×480）位于 `build/idf55-v4/esp32_div.bin`。两个目录各自保存 `sdkconfig`，避免板型和旧 IDF 6.0 构建缓存混用。现有根目录配置保持 V4；自定义参数应复制到相同板型的新构建目录。旧构建产物仍可保留。
+
+VS Code 的 ESP-IDF 扩展也已选择 v5.5.5 和 V4 的新构建目录。使用手动 IDF 命令时明确传入目录，例如 `idf.py -B build/idf55-v4 build`，避免使用根 `build/` 下的旧缓存。
+
+烧录时明确指定板型及实际串口，例如当前 V4：
+
+```powershell
+./tools/build.ps1 -Board v4 -Flash -Port COM16
+```
+
+V3 使用 `-Board v3` 和它的实际端口。脚本检查 SDK 版本、硬件目标、全部应用源文件为 C 以及 OTA 分区容量后再烧录。JSON 使用 IDF 5.5 自带的 `json` 组件。
 
 ### C 显示界面
 
