@@ -33,13 +33,9 @@ enum {
 #define DIV_LCD_WIDTH 240
 #define DIV_LCD_HEIGHT 320
 #endif
-/* Match TFT_eSPI ILI9341 rotation 0: MADCTL = MX | BGR.
+/* Match TFT_eSPI ILI9341 and ST7796 rotation 0: MADCTL = MX | BGR.
    LVGL's rotation callback must preserve MX or glyphs are mirrored. */
-#ifdef CONFIG_DIV_PANEL_ILI9341
 #define DIV_LCD_NATIVE_MIRROR_X true
-#else
-#define DIV_LCD_NATIVE_MIRROR_X false
-#endif
 esp_err_t div_board_init(void);
 i2c_master_bus_handle_t div_board_i2c(void);
 esp_err_t div_board_buttons(uint8_t *pressed);

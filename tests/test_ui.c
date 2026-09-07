@@ -62,7 +62,7 @@ static void spectrum_tests(void)
     assert(div_spectrum_rgb565(0)==0 && div_spectrum_rgb565(64)==0xf800 && div_spectrum_rgb565(127)==0xffff);
 }
 
-static lv_color_t pixels[240*320], buffer[240*24];
+static lv_color_t pixels[480*480], buffer[480*24];
 static const char *last_action;
 static unsigned click_count;
 static div_touch_filter_t filter;
@@ -136,7 +136,7 @@ static void touch_tests(void)
 static void flush(lv_disp_drv_t *driver, const lv_area_t *area, lv_color_t *color)
 {
     for (int y=area->y1;y<=area->y2;++y)
-        for (int x=area->x1;x<=area->x2;++x) pixels[y*240+x]=*color++;
+        for (int x=area->x1;x<=area->x2;++x) pixels[y*driver->hor_res+x]=*color++;
     lv_disp_flush_ready(driver);
 }
 static void action(const char *value) { last_action=value; ++click_count; }
@@ -145,8 +145,9 @@ static void snapshot(const char *name)
     lv_refr_now(NULL);
     char path[200]; snprintf(path,sizeof(path),"build/ui-preview/%s.ppm",name);
     FILE *f=fopen(path,"wb"); assert(f);
-    fprintf(f,"P6\n240 320\n255\n");
-    for (unsigned i=0;i<240*320;++i) {
+    unsigned width=lv_disp_get_hor_res(NULL), height=lv_disp_get_ver_res(NULL);
+    fprintf(f,"P6\n%u %u\n255\n",width,height);
+    for (unsigned i=0;i<width*height;++i) {
         lv_color32_t c; c.full=lv_color_to32(pixels[i]);
         uint8_t rgb[]={c.ch.red,c.ch.green,c.ch.blue}; fwrite(rgb,1,3,f);
     }
@@ -222,6 +223,7 @@ int main(void)
     lv_group_remove_all_objs(group); lv_obj_clean(body); lv_obj_remove_style_all(body);
     lv_obj_set_pos(body,0,20); lv_obj_set_size(body,240,300);
     lv_obj_t *canvas=div_waterfall_create(body,240,246); assert(canvas);
+    assert(lv_canvas_get_img(canvas)->header.cf==LV_IMG_CF_INDEXED_8BIT);
     lv_obj_set_pos(canvas,0,18); lv_obj_update_layout(body);
     uint8_t levels[DIV_SPECTRUM_BINS]; memset(levels,127,sizeof(levels));
     div_waterfall_update(canvas,levels); lv_refr_now(NULL);
@@ -241,6 +243,36 @@ int main(void)
     assert(lv_mem_test()==LV_RES_OK);
     lv_mem_monitor_t memory; lv_mem_monitor(&memory);
     assert(memory.free_biggest_size>65000); /* Canvas buffer and decoder released. */
+    const int sizes[][2]={{320,240},{320,480},{480,320}};
+    const char *names[]={"waterfall-v3-landscape","waterfall-v4-portrait","waterfall-v4-landscape"};
+    for (unsigned variant=0;variant<3;++variant) {
+        int width=sizes[variant][0], height=sizes[variant][1];
+        driver.hor_res=width; driver.ver_res=height;
+        lv_disp_drv_update(display,&driver);
+        lv_obj_set_size(body,width,height-20);
+        lv_obj_del(bar); bar=div_menu_status_create(lv_scr_act(),true,0);
+        div_menu_status_update(bar,true,-1,false);
+        canvas=div_waterfall_create(body,width,height-74); assert(canvas);
+        assert(lv_canvas_get_img(canvas)->header.cf==(variant?LV_IMG_CF_INDEXED_4BIT:LV_IMG_CF_INDEXED_8BIT));
+        lv_obj_set_pos(canvas,0,18); lv_obj_update_layout(body);
+        memset(levels,127,sizeof(levels)); div_waterfall_update(canvas,levels); lv_refr_now(NULL);
+        assert(lv_color_to32(pixels[91*width])==0xffffffff);
+        assert(lv_color_to32(pixels[91*width+width-1])==0xffffffff);
+        memset(levels,0,sizeof(levels)); div_waterfall_update(canvas,levels); lv_refr_now(NULL);
+        assert(lv_color_to32(pixels[91*width+width/2])==0xffffffff);
+        assert((lv_color_to32(pixels[92*width+width/2])&0xffffff)==0);
+        for (unsigned row=0;row<(unsigned)height-127;++row) {
+            for (unsigned i=0;i<DIV_SPECTRUM_BINS;++i) levels[i]=(i+row)%128;
+            div_waterfall_update(canvas,levels); lv_refr_now(NULL);
+        }
+        assert(lv_mem_test()==LV_RES_OK);
+        lv_mem_monitor(&memory);
+        assert(memory.free_biggest_size>12000); /* Room for on-board controls and labels. */
+        snapshot(names[variant]);
+        lv_obj_del(canvas); lv_refr_now(NULL);
+        lv_mem_monitor(&memory); assert(memory.free_biggest_size>65000);
+    }
+    puts("V3/V4: portrait and landscape waterfall rendering, original V3 palette, packed V4 pixels, history wrap and memory headroom passed in 96 KiB.");
     puts("Waterfall: timestamp windows, silence, channel reset, FFT vs DFT, palette, history wrap, partial redraw and buffer release passed.");
     puts("UI: 32 calibration orientations, noise/release filter, real pointer hits on all 8 tiles including About, press lock, grid/pages/keypad/fonts passed.");
     return 0;
