@@ -16,6 +16,7 @@
 static const char *TAG = "storage";
 static sdmmc_card_t *card;
 static nvs_handle_t nvs;
+_Static_assert(sizeof(div_settings_t)==24,"Version 2 NVS migration requires the original 24-byte settings layout");
 bool div_storage_ready(void) { return card != NULL; }
 esp_err_t div_storage_path(const char *relative, char out[DIV_PATH_MAX])
 {
@@ -71,7 +72,7 @@ esp_err_t div_storage_init(void)
 esp_err_t div_settings_load(div_settings_t *out)
 {
     if (!out) return ESP_ERR_INVALID_ARG;
-    *out = (div_settings_t){.version = 2, .brightness = 160, .dark = 1,
+    *out = (div_settings_t){.version = 3, .brightness = 160, .dark = 1,
         .touch_x0 = 280, .touch_x1 = 3850, .touch_y0 = 320, .touch_y1 = 3750,
         .board_id = DIV_BOARD_ID};
     div_settings_t saved;
@@ -102,15 +103,22 @@ esp_err_t div_settings_load(div_settings_t *out)
         return ESP_OK;
     }
     if (err != ESP_OK) return err;
-    if (size != sizeof(saved) || saved.version != 2 || saved.board_id != DIV_BOARD_ID || saved.accent>6 ||
+    if (size != sizeof(saved) || (saved.version != 2 && saved.version != 3) || saved.board_id != DIV_BOARD_ID || saved.accent>6 ||
         saved.touch_x1 <= saved.touch_x0 || saved.touch_y1 <= saved.touch_y0 ||
         saved.touch_x1 > 4095 || saved.touch_y1 > 4095) return ESP_ERR_INVALID_VERSION;
+    if (saved.version==2) {
+        /* Version 2 did not distinguish guessed ranges from real calibration.
+           The new byte occupies old struct padding; do not interpret that byte. */
+        saved.version=3;
+        saved.touch_calibrated=0;
+    }
+    if (saved.touch_calibrated>1) return ESP_ERR_INVALID_VERSION;
     *out = saved;
     return ESP_OK;
 }
 esp_err_t div_settings_save(const div_settings_t *s)
 {
-    if (!s || s->version != 2 || s->board_id != DIV_BOARD_ID || s->accent>6 ||
+    if (!s || s->version != 3 || s->board_id != DIV_BOARD_ID || s->accent>6 || s->touch_calibrated>1 ||
         s->touch_x0 >= s->touch_x1 || s->touch_y0 >= s->touch_y1 ||
         s->touch_x1 > 4095 || s->touch_y1 > 4095) return ESP_ERR_INVALID_ARG;
     ESP_RETURN_ON_ERROR(nvs_set_blob(nvs, "settings", s, sizeof(*s)), TAG, "save settings");
@@ -120,10 +128,10 @@ esp_err_t div_settings_save(const div_settings_t *s)
         int length=snprintf(json,sizeof(json),
             "{\"board\":\"ESP32_DIV_V%d\",\"brightness\":%u,\"theme\":%u,\"accentColor\":%u,"
             "\"neopixelEnabled\":%s,\"autoWifiScan\":%s,\"autoBleScan\":%s,"
-            "\"touch\":{\"xMin\":%u,\"xMax\":%u,\"yMin\":%u,\"yMax\":%u,\"swap\":%u,\"invertX\":%u,\"invertY\":%u}}\n",
+            "\"touch\":{\"xMin\":%u,\"xMax\":%u,\"yMin\":%u,\"yMax\":%u,\"swap\":%u,\"invertX\":%u,\"invertY\":%u,\"calibrated\":%u}}\n",
             DIV_BOARD_ID,s->brightness,!s->dark,s->accent,s->led_enabled ? "true" : "false",
             s->background_scan ? "true" : "false",s->background_scan ? "true" : "false",
-            s->touch_x0,s->touch_x1,s->touch_y0,s->touch_y1,s->touch_swap,s->touch_invert_x,s->touch_invert_y);
+            s->touch_x0,s->touch_x1,s->touch_y0,s->touch_y1,s->touch_swap,s->touch_invert_x,s->touch_invert_y,s->touch_calibrated);
         if (length<0 || length>=sizeof(json)) return ESP_ERR_INVALID_SIZE;
         esp_err_t backup=div_storage_write("config/settings.json",json,length);
         if (backup!=ESP_OK) ESP_LOGW(TAG,"NVS saved; SD settings backup failed: %s",esp_err_to_name(backup));

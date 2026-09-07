@@ -13,11 +13,37 @@ ESP32-DIV 的 ESP-IDF 版本工程，面向 ESP32-S3 平台，提供统一的无
 
 ## 构建与烧录
 
+V3（ILI9341，240×320）使用独立构建目录；端口按设备管理器中的实际端口填写：
+
+```powershell
+./tools/build.ps1 -Board v3 -BuildDirectory build/v3-ui -Flash -Port COM26
+```
+
+已有根目录 `sdkconfig` 的自定义配置时，先复制到该构建目录的 `sdkconfig`，脚本会保留其中的配置。V4 可使用 `-Board v4`，不要将 V4 镜像烧到 V3。
+
+在已配置好 ESP-IDF 环境的终端中也可直接使用：
+
 ```bash
 idf.py set-target esp32s3
 idf.py build
 idf.py flash monitor
 ```
+
+### C 显示界面
+
+主菜单恢复原版的两列四行布局，保留 More 网格、分类菜单顺序、WiFi/Bluetooth 分页、顶部状态栏及原版 Font 1/Font 2 点阵字体和图标。字体和图标已经转换为 C 常量，不依赖 Arduino 或 TFT_eSPI。Settings 和 About 从主菜单直接进入。
+
+V3 的 ILI9341 原生扫描方向采用 `MX | BGR`。`div_board.h` 中的 `DIV_LCD_NATIVE_MIRROR_X` 传入 LVGL 显示配置，以免 LVGL 更新旋转时清掉 MX，导致文字左右反写。
+
+GPIO14/21 保持第三个 NRF24 优先，GPIO2 保持蜂鸣器优先。未启用电池采样时，状态栏显示 `--%`。AUX 返回上一层并停止当前任务。
+
+未校准的设备启动后会进入触摸校准：依次按住左上、右上、右下、左下、中心的十字约半秒并松开。中心验证通过后保存到 NVS，重启无需重复。旧固件的默认坐标不会被当作实物校准结果。也可进入 Tools → Touch Calibrate，或长按 AUX 两秒重新校准；短按 AUX 取消。校准前可使用物理按键操作，触摸点击暂不启用，避免点错菜单。
+
+`./tools/test-ui.ps1` 在电脑上运行与固件相同的 C/LVGL 菜单代码，检查网格坐标、分页、按键导航和菜单事件，并将画面输出到 `build/ui-preview/*.ppm`。`tools/import-ui-assets.py` 可从原项目重新生成字库和图标，普通编译无需原项目。
+
+WiFi → Packet Monitor 已恢复上方实时曲线、下方彩色瀑布图。进入后持续监听信道 1，顶部 `− / +` 或物理左右键切换信道；底部 Stop 停止、Run 重新开始、Config 设置时长/跳频/PCAP、Back 返回。图表与原版一样，对接收数据包的时间变化做 FFT；它不是射频采样仪的频谱。普通 WiFi Scanner 仍显示 AP 列表。界面测试还验证 FFT、采样窗口、静默时段、瀑布历史和内存释放。
+
+当前恢复范围包括菜单、公共界面及 Packet Monitor 图表；其他功能执行页仍使用 C 服务层的参数与日志界面，尚未逐页复刻 Arduino 原版的专用图表和交互。
 
 ## 主要能力
 
@@ -77,7 +103,7 @@ idf.py flash monitor
 
 ## 硬件说明
 
-项目以主板 + 扩展板的方式组织，具体板型由 `main/board_config.h` 和 Kconfig 选择。
+项目以主板 + 扩展板的方式组织，具体板型由 `components/div_board/include/div_board.h` 和该组件的 Kconfig 选择。
 
 ### 主板
 

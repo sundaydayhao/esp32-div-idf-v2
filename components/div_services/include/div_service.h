@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include "esp_err.h"
 #include "cJSON.h"
+#include "div_spectrum.h"
 #define DIV_JOB_TEXT_MAX 1536
 typedef enum { DIV_WIFI, DIV_BLE, DIV_NRF, DIV_SUB, DIV_IR, DIV_NFC, DIV_GPS, DIV_SYSTEM } div_category_t;
 typedef struct { const char *key, *label, *value; } div_field_t;
@@ -34,6 +35,8 @@ const char *div_arg_string(const div_job_t *job, const char *name, const char *f
 int div_arg_int(const div_job_t *job, const char *name, int fallback, int low, int high);
 double div_arg_double(const div_job_t *job, const char *name, double fallback, double low, double high);
 esp_err_t div_wifi_job(const div_job_t *job);
+bool div_wifi_monitor_frame(div_spectrum_frame_t *frame);
+void div_wifi_monitor_channel(int delta);
 esp_err_t div_ble_job(const div_job_t *job);
 esp_err_t div_rf_job(const div_job_t *job);
 esp_err_t div_ir_job(const div_job_t *job);

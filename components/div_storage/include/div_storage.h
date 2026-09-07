@@ -11,6 +11,7 @@ typedef struct {
     uint16_t touch_x0, touch_x1, touch_y0, touch_y1;
     uint8_t touch_swap, touch_invert_x, touch_invert_y, board_id;
     uint8_t accent;
+    uint8_t touch_calibrated;
 } div_settings_t;
 esp_err_t div_storage_init(void);
 bool div_storage_ready(void);

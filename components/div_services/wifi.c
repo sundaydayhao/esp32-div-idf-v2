@@ -30,11 +30,29 @@ static esp_netif_t *sta, *ap;
 static bool initialized, running;
 static QueueHandle_t packets;
 static atomic_uint dropped;
+static div_spectrum_capture_t spectrum;
+static portMUX_TYPE spectrum_lock=portMUX_INITIALIZER_UNLOCKED;
+static atomic_int monitor_channel_delta;
+bool div_wifi_monitor_frame(div_spectrum_frame_t *frame)
+{
+    portENTER_CRITICAL(&spectrum_lock);
+    div_spectrum_advance(&spectrum,esp_timer_get_time());
+    *frame=spectrum.frame;
+    portEXIT_CRITICAL(&spectrum_lock);
+    frame->dropped=atomic_load(&dropped);
+    return frame->active;
+}
+void div_wifi_monitor_channel(int delta) { atomic_fetch_add(&monitor_channel_delta,delta); }
 static void monitor_rx(void *buf, wifi_promiscuous_pkt_type_t type)
 {
     if (type == WIFI_PKT_MISC || !packets) return;
     const wifi_promiscuous_pkt_t *p = buf;
     if (p->rx_ctrl.rx_state || p->rx_ctrl.sig_len < 4) return;
+    portENTER_CRITICAL(&spectrum_lock);
+    if (spectrum.active && p->rx_ctrl.channel==spectrum.frame.channel)
+        div_spectrum_receive(&spectrum,esp_timer_get_time(),p->rx_ctrl.rssi,
+            (p->payload[0]&0xfc)==0xc0 || (p->payload[0]&0xfc)==0xa0);
+    portEXIT_CRITICAL(&spectrum_lock);
     packet_t item = {.length = p->rx_ctrl.sig_len - 4, .timestamp = p->rx_ctrl.timestamp,
         .rssi = p->rx_ctrl.rssi, .channel = p->rx_ctrl.channel};
     item.saved = item.length < sizeof(item.frame) ? item.length : sizeof(item.frame);
@@ -137,23 +155,46 @@ static esp_err_t monitor(const div_job_t *j)
     bool wps_only = !strcmp(j->feature->id,"wifi_wps");
     bool hidden = !strcmp(j->feature->id,"wifi_hidden");
     bool deauth = !strcmp(j->feature->id,"wifi_detect");
+    bool graph = !strcmp(j->feature->id,"wifi_monitor");
     wifi_promiscuous_filter_t filter = {.filter_mask = WIFI_PROMIS_FILTER_MASK_MGMT | WIFI_PROMIS_FILTER_MASK_DATA};
     esp_err_t err = esp_wifi_set_promiscuous_filter(&filter);
     if (err == ESP_OK) err = esp_wifi_set_promiscuous_rx_cb(monitor_rx);
     if (err == ESP_OK) err = esp_wifi_set_promiscuous(true);
     unsigned fixed = div_arg_int(j,"channel",0,0,last_channel()), channel = fixed ? fixed : 1;
     if (err == ESP_OK) err = esp_wifi_set_channel(channel,WIFI_SECOND_CHAN_NONE);
-    int64_t until = esp_timer_get_time() + (int64_t)div_arg_int(j,"seconds",15,1,3600)*1000000;
+    int seconds=div_arg_int(j,"seconds",15,graph?0:1,3600);
+    int64_t until=seconds ? esp_timer_get_time()+(int64_t)seconds*1000000 : INT64_MAX;
+    atomic_store(&monitor_channel_delta,0);
+    if (graph && err==ESP_OK) {
+        portENTER_CRITICAL(&spectrum_lock);
+        div_spectrum_begin(&spectrum,esp_timer_get_time(),channel);
+        portEXIT_CRITICAL(&spectrum_lock);
+    }
     int64_t next_hop = 0, next_report = 0;
     uint32_t counts[14] = {0}, attacks = 0;
     div_wifi_ies_t known[32] = {0};
     unsigned known_count = 0;
     while (err == ESP_OK && !div_job_cancelled() && esp_timer_get_time() < until) {
         int64_t now = esp_timer_get_time();
+        int delta=graph?atomic_exchange(&monitor_channel_delta,0):0;
+        if (delta) {
+            int next=(int)channel-1+delta, last=last_channel();
+            next=(next%last+last)%last+1;
+            fixed=channel=next;
+            err=esp_wifi_set_channel(channel,WIFI_SECOND_CHAN_NONE);
+            portENTER_CRITICAL(&spectrum_lock);
+            div_spectrum_begin(&spectrum,now,channel);
+            portEXIT_CRITICAL(&spectrum_lock);
+        }
         if (!fixed && now >= next_hop) {
             channel = channel % last_channel() + 1;
             err = esp_wifi_set_channel(channel,WIFI_SECOND_CHAN_NONE);
             next_hop = now + 250000;
+            if (graph) {
+                portENTER_CRITICAL(&spectrum_lock);
+                div_spectrum_begin(&spectrum,now,channel);
+                portEXIT_CRITICAL(&spectrum_lock);
+            }
         }
         packet_t p;
         if (xQueueReceive(packets,&p,pdMS_TO_TICKS(20)) == pdTRUE) {
@@ -192,6 +233,11 @@ static esp_err_t monitor(const div_job_t *j)
     }
     esp_wifi_set_promiscuous(false);
     esp_wifi_set_promiscuous_rx_cb(NULL);
+    if (graph) {
+        portENTER_CRITICAL(&spectrum_lock);
+        spectrum.active=false; spectrum.frame.active=false;
+        portEXIT_CRITICAL(&spectrum_lock);
+    }
     if (pcap && fclose(pcap) != 0) err = ESP_FAIL;
     return err;
 }

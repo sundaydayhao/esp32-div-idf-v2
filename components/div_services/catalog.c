@@ -6,6 +6,12 @@ static const div_field_t fields_scan[] = {
     {"path", "Capture file (optional)", ""},
     {NULL, NULL, NULL}
 };
+static const div_field_t fields_monitor[] = {
+    {"seconds", "Duration (0 = continuous)", "0"},
+    {"channel", "Channel (0 = hop)", "1"},
+    {"path", "Capture file (optional)", ""},
+    {NULL, NULL, NULL}
+};
 static const div_field_t fields_txwifi[] = {
     {"ssid", "Network name", "DIV-Lab"},
     {"channel", "Channel", "6"},
@@ -109,7 +115,7 @@ static const div_field_t fields_none[] = {
     {NULL, NULL, NULL}
 };
 static const div_feature_t features[] = {
-    {"wifi_monitor", "Packet Monitor", "Receive packets, channel activity and optional PCAP.", DIV_WIFI, fields_scan, false},
+    {"wifi_monitor", "Packet Monitor", "Live packet FFT, color waterfall and optional PCAP.", DIV_WIFI, fields_monitor, false},
     {"wifi_scan", "Wi-Fi Scanner", "Discover APs with signal, channel and authentication details.", DIV_WIFI, fields_scan, false},
     {"wifi_beacon", "Beacon Spammer", "Transmit a finite sequence of custom lab beacons.", DIV_WIFI, fields_txwifi, true},
     {"wifi_deauth", "Wi-Fi Deauther", "Use the public Wi-Fi transmit API; firmware may reject deauth frames.", DIV_WIFI, fields_txwifi, true},
